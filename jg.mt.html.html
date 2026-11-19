@@ -1,112 +1,117 @@
-<!DOCTYPE>
-<html lang="ptBR">
-    <head>
-        <meta chrset="  UTF-8"/>
-        <meta name="viewport"content="width=device,initial-scale=1.0"/>
-        <title>questionario - o milagre de tyson</title>
-        <style>
-            body{
-                font-family:arial,sans-serif;
-                backgroud:#f4f4f4
-                padding:30px;
-            }
-            .quiz-container{
-                backgroud:white;
-                max-width:600px;
-                margin:auto;
-                padding:25px;
-                border-radius:10px;
-                box-shadow:0 0 10px rgba(0,0,0,0,.1);
-            }
-            h1{
-                text-aling:center;
-                color:#333;
-            }
-            .question{
-                margin-bottom:20px;
-            }
-            .question h3{
-                margin-bottom:10px;
-            }
-            button{
-                backgroud:#007bff;
-                color:white;
-                border:none;
-                padding:12px 20px;
-                border-raduius:5px;
-                cursor:pointer;
-                font-family:16px;
-            }
-            buttom:hover{
-                background:#0056b3;
-            }
-            #resultado{
-                margin-top:20px;
-                font-size:18px;
-                font-weight:bold;
-                text-aling:center;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="quiz-conteiner">
-            <h1>quiz-o milagre de tyson</h1>
-            <form id="quizform"
-            <div class="question">
-                <h3>1.quem é o personagem principal do filme?</h3>
-                <label><input type="radio"name="q1"value="certo">tyson</label>
-                <label><input type="radio" name="q1" value="errado">lucas</label>
-                <label><input type="radio"name="q1"value="errado">gabriel</label>
-            </div>
-            <div class=""question">
-            <h3>2.qual é um dos temas principais do filme?</h3>
-             <label><input type="radio"name="q2"value="certo">superação</label>
-             <label><input type="radio"name="q2"value="errado">ficção cientifíca</label>
-             <label><input type="radio"name="q2"value="errado">viagem no tempo</label>
-        </div>
-
-
-        <div class="question">
-            <h3>3.o filme é baseado em:</h3>
-            <label><input type="radio"name="q3"value="certo">uma história inspiradora</label>
-            <label><input type="radio"name="q3"value="errado">um jogo eletronico</label>
-            <label><input type="radio"name="q3"value="errado">um conto medieval</label>
-        </div>
-
-
-        <div class="question">
-            <h3>4.qual sentimento o filme orocura transmitir?</h3>
-            <label><input type="radio"name="q4"value="certo">esperança</label>
-            <label><input type="radio"name="q4"value="errado">terror</label>
-            <label><input type="radio"name="q4"value="errado">suspense</label>
-        </div>
-
-
-        <div class="question">
-            <h3>5.oque tyson demonstra ao longo do filme?</h3>
-            <label><input type="radio"name="q5"value="certo">coragem</label>
-            <label><input type="radio"name="q5"value="errado">maldade</label>
-            <label><input type="radio"name="q5"value="errado">egoísmo</label>
-        </div>
-        <botton type="button" onclick="corrigirquiz()">enviar respostas</botton>
-        <div id="resultado></div>"
-    </form>
-</div>
-<script>
-    function corrigirquiz(){
-        let pontos=0;
-        const respostas = document.querySelectorAll('input[type="radio"]:checked');
-
-        respostas.forEach((resposta)) => {
-            if(resposta.value ==="certo"){
-                pontos++;
-            }
-        });
-        document.getElementById("resultado").innerHTML =arguments'você acertou ${pontos} de 5 perguntas!';
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Questionário - O Milagre de Tyson</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 30px;
         }
-    
-</script>
+        .quiz-container {
+            background: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h3 {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
-        
-    </body>
+    <div class="quiz-container">
+        <h1>Quiz - O Milagre de Tyson</h1>
+        <form id="quizform">
+            <div class="question">
+                <h3>1. Quem é o personagem principal do filme?</h3>
+                <label><input type="radio" name="q1" value="certo"> Tyson</label>
+                <label><input type="radio" name="q1" value="errado"> Lucas</label>
+                <label><input type="radio" name="q1" value="errado"> Gabriel</label>
+            </div>
+
+            <div class="question">
+                <h3>2. Qual é um dos temas principais do filme?</h3>
+                <label><input type="radio" name="q2" value="certo"> Superação</label>
+                <label><input type="radio" name="q2" value="errado"> Ficção científica</label>
+                <label><input type="radio" name="q2" value="errado"> Viagem no tempo</label>
+            </div>
+
+            <div class="question">
+                <h3>3. O filme é baseado em:</h3>
+                <label><input type="radio" name="q3" value="certo"> Uma história inspiradora</label>
+                <label><input type="radio" name="q3" value="errado"> Um jogo eletrônico</label>
+                <label><input type="radio" name="q3" value="errado"> Um conto medieval</label>
+            </div>
+
+            <div class="question">
+                <h3>4. Qual sentimento o filme procura transmitir?</h3>
+                <label><input type="radio" name="q4" value="certo"> Esperança</label>
+                <label><input type="radio" name="q4" value="errado"> Terror</label>
+                <label><input type="radio" name="q4" value="errado"> Suspense</label>
+            </div>
+
+            <div class="question">
+                <h3>5. O que Tyson demonstra ao longo do filme?</h3>
+                <label><input type="radio" name="q5" value="certo"> Coragem</label>
+                <label><input type="radio" name="q5" value="errado"> Maldade</label>
+                <label><input type="radio" name="q5" value="errado"> Egoísmo</label>
+            </div>
+
+            <button type="button" onclick="corrigirquiz()">Enviar respostas</button>
+            <div id="resultado"></div>
+        </form>
+    </div>
+
+    <script>
+        function corrigirquiz() {
+            let pontos = 0;
+            const respostas = document.querySelectorAll('input[type="radio"]:checked');
+            
+            respostas.forEach((resposta) => {
+                if (resposta.value === "certo") {
+                    pontos++;
+                }
+            });
+
+            document.getElementById("resultado").innerHTML = `Você acertou ${pontos} de 5 perguntas!`;
+        }
+    </script>
+
+</body>
 </html>
