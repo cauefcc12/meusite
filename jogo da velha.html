@@ -1,140 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="vieport" content="width=device-width,initial-scale=1.0">
-<title>Jogo da Velha</title>
-<style>
-body {
-font-family: Arial,sans-serif;
-background-color: #f4f4f9;
-display: flex;
-flex-direction:column;
-align-items: center;
-justify-content: center;
-height: 100vh;
-margin:0;
-}
-h1 {
-color:#333;
-margin-bottom: 10px;
-}
-#status {
-fon-size: 1.2rem;
-color: #555;
-margin-bottom: 20px;
-font-weight: bold;
-}
-.tabuleiro {
-display: grid;
-grid-template-columns: repeat(3,100px);
-grid-template-rows: repeat(3,100px);
-gap: 5px;
-border-radius: 10px;
-margin-bottom: 20px;
-}
-.celula {
-background-color: #fff;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 2.5rem;
-font-weight: bold;
-color: #333;
-cursor: pointer;
-border-radius: 5px;
-user-select: none;
-transition: backgroud-color 0.2s;
-}
-.celula:hover {
-background-color: #e0e0e0;;
-}
-.celula.x {
-color: #e74c3c;
-}
-#reiniciar {
-padding: 10px 20px;
-font-size: 1rem;
-background-color: #2ecc71;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-transmition: backgroud-color 0.2s;
-}
-#reiniciar:hover {
-background-color: #27ae60;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 { color: #333; }
+        #status {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .tabuleiro {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        .celula {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            user-select: none;
+        }
+        .celula:hover { background-color: #e0e0e0; }
+        .celula.x { color: #ff1900; }
+        .celula.o { color: #0099ff; }
+        #reiniciar {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #reiniciar:hover { background-color: #27ae60; }
+    </style>
 </head>
 <body>
-<h1>Jogo da Velha</h1>
-<div id="status">Vez do Jogador: X</div>
-<div class="tabuleiro" id="tabuleiro">
-<div class="celula" data-index="0"></div>
-<div class="celula" data-index="1"></div>
-<div class="celula" data-index="2"></div>
-<div class="celula" data-index="3"></div>
-<div class="celula" data-index="4"></div>
-<div class="celula" data-index="5"></div>
-<div class="celula" data-index="6"></div>
-<div class="celula" data-index="7"></div>
-<div class="celula" data-index="8"></div>
-</div>
-<buton id="reiniciar">Reiniciar Jogo</buton>
-<script>
-const tabuleiroEI = document.getElementById('tabuleiro');
-const statusEI = document.getElementById('status');
-const reiniciarBtn = document.getElementById('reiniciar');
-const celulas = document.querySelectorAll('.celula');
-let tabuleiro = [",",",",",",",","];
-let JogadorAtual = 'X';
-let jogadas = 0;
-let jogoAtivo = true;
-//conbinações corretas para vencer(linhas,colunas e diagonais)
-const vitorias = [
-[0,1,2], [3,4,5],[,6,7,8],//linhas
-[0,3,6], [1,4,7], [2,5,8],//colunas
-[0,4,8], [2,4,6],//diagonais
-];
-function verificarVitoria(jogador) {
-return vitorias.some(c=> {
-return btabuleiro[c[0]] === jogador && tabuleiro[c[1]] === jogador[c[2]] === jogador;
-});
-}
-function lidarComClique(e) {
-const index = e.target.getAttribute('data-index');
-if (!jogoAtivo || tabuleiro[index] !==")return;
-tabuleiro[index] = JogadorAtual;
-e.target.textContent = JogadorAtual;
-e.target.classList.add(JogadorAtual.toLowerCase());
-jogadas++;
-if (verificarVitoria(JogadorAtual)) {
-statusEI.textContent = `Parabéns! O jogador ${JogadorAtual} venceu!`;
-jogoAtivo = false;
-return;
-}
-if (jogadas === 9) {
-statusEI.textContent = ')O jogo terminou empatado (deu velha)!';
-jogoAtivo = false;
-return;
-}
-JogadorAtual = JogadorAtual === 'X' ? 'O' : 'X';
-statusEI.textContent = `Vez do jogador: ${JogadorAtual}`;
-}
-function reiniciarJogo() {
-tabuleiro = [",",",",",",",","];
-JogadorAtual = 'X';
-jogadas = 0;
-jogoAtivo = true;
-statusEI.textContent = `Vez do jogador: ${JogadorAtual}`;
-celulas.forEach(celula => {
-celula.textContent = ";
-celula.classList.remove('x', 'o');
-});
-}
-celulas.forEach(celula =>celula.addEventListener('click', lidarComClique));
-reiniciarBtn.addEventListener('click', reiniciarJogo);
-</script>
+    <h1>Jogo da Velha</h1>
+    <div id="status">Vez do jogador: X</div>
+    <div class="tabuleiro" id="tabuleiro">
+        <div class="celula" data-index="0"></div>
+        <div class="celula" data-index="1"></div>
+        <div class="celula" data-index="2"></div>
+        <div class="celula" data-index="3"></div>
+        <div class="celula" data-index="4"></div>
+        <div class="celula" data-index="5"></div>
+        <div class="celula" data-index="6"></div>
+        <div class="celula" data-index="7"></div>
+        <div class="celula" data-index="8"></div>
+    </div>
+    <button id="reiniciar">Reiniciar Jogo</button>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const celulas = document.querySelectorAll('.celula');
+        const reiniciarBtn = document.getElementById('reiniciar');
+
+        let tabuleiro = ["", "", "", "", "", "", "", "", ""];
+        let jogadorAtual = 'X';
+        let jogoAtivo = true;
+        let jogadas = 0;
+
+        const vitorias = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        function verificarVitoria() {
+            return vitorias.some(combinacao =>
+                combinacao.every(index => tabuleiro[index] === jogadorAtual)
+            );
+        }
+
+        function lidarComClique(e) {
+            const index = Number(e.target.dataset.index);
+
+            if (!jogoAtivo || tabuleiro[index] !== "") {
+                return;
+            }
+
+            tabuleiro[index] = jogadorAtual;
+            e.target.textContent = jogadorAtual;
+            e.target.classList.add(jogadorAtual.toLowerCase());
+            jogadas++;
+
+            if (verificarVitoria()) {
+                statusEl.textContent = `Parabéns! O jogador ${jogadorAtual} venceu!`;
+                jogoAtivo = false;
+                return;
+            }
+
+            if (jogadas === 9) {
+                statusEl.textContent = "O jogo terminou empatado (deu velha)!";
+                jogoAtivo = false;
+                return;
+            }
+
+            jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X';
+            statusEl.textContent = `Vez do jogador: ${jogadorAtual}`;
+        }
+
+        function reiniciarJogo() {
+            tabuleiro = ["", "", "", "", "", "", "", "", ""];
+            jogadorAtual = 'X';
+            jogoAtivo = true;
+            jogadas = 0;
+            statusEl.textContent = "Vez do jogador: X";
+            celulas.forEach(celula => {
+                celula.textContent = "";
+                celula.classList.remove('x', 'o');
+            });
+        }
+
+        celulas.forEach(celula => {
+            celula.addEventListener('click', lidarComClique);
+        });
+        reiniciarBtn.addEventListener('click', reiniciarJogo);
+    </script>
 </body>
 </html>
