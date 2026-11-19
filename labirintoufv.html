@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labirinto da Abelha</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f0f0f0;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        #jogo {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            width: max-content;
+            margin: 20px auto;
+        }
+
+        #jogo div {
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            border: 1px solid gray;
+            background-color: white;
+        }
+
+        #jogo .parede {
+            background-color: black;
+        }
+
+        #jogo .chegada {
+            background-color: green;
+        }
+
+        #jogo .jogador {
+            background-color: white;
+            background-image: url("abelhudo.png");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        p {
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>🐝 Labirinto da Abelha</h2>
+    <p>Use as setas do teclado para chegar ao quadrado verde!</p>
+
+    <div id="jogo"></div>
+
+    <script>
+        const jogo = document.getElementById("jogo");
+
+        // 0 = caminho, 1 = parede, 2 = chegada
+        const mapa = [
+            [1,1,0,1,1,1,1,1,1,1],
+            [1,0,0,0,1,0,0,0,0,1],
+            [1,1,1,0,1,0,1,1,0,1],
+            [1,0,0,0,0,0,0,1,0,1],
+            [1,0,1,1,1,1,0,1,0,1],
+            [1,0,1,0,0,0,0,1,0,1],
+            [1,0,1,1,1,1,1,1,0,1],
+            [1,0,0,0,0,0,0,0,2,1],
+            [1,1,1,1,1,1,1,1,1,1]
+        ];
+
+        // Posição inicial da abelha
+        let x = 1;
+        let y = 1;
+
+        // Verifica se o jogador venceu
+        let venceu = false;
+
+        function desenhar() {
+            jogo.innerHTML = "";
+
+            mapa.forEach((linha, Y) => {
+                linha.forEach((tipo, X) => {
+                    const celula = document.createElement("div");
+
+                    // Desenha as paredes e a chegada
+                    if (tipo === 1) {
+                        celula.classList.add("parede");
+                    } else if (tipo === 2) {
+                        celula.classList.add("chegada");
+                    }
+
+                    // Coloca a imagem da abelha
+                    if (X === x && Y === y) {
+                        celula.className = "jogador";
+                    }
+
+                    jogo.appendChild(celula);
+                });
+            });
+        }
+
+        // Movimentação pelo teclado
+        document.onkeydown = function(e) {
+            if (venceu) return;
+
+            let nx = x;
+            let ny = y;
+
+            if (e.key === "ArrowUp") ny--;
+            else if (e.key === "ArrowDown") ny++;
+            else if (e.key === "ArrowLeft") nx--;
+            else if (e.key === "ArrowRight") nx++;
+            else return;
+
+            // Impede atravessar paredes ou sair do mapa
+            if (
+                mapa[ny] &&
+                mapa[ny][nx] !== undefined &&
+                mapa[ny][nx] !== 1
+            ) {
+                x = nx;
+                y = ny;
+
+                desenhar();
+
+                // Verifica a chegada
+                if (mapa[y][x] === 2) {
+                    venceu = true;
+
+                    setTimeout(() => {
+                        alert("🐝 Parabéns! A abelha venceu o labirinto!");
+                    }, 100);
+                }
+            }
+        };
+
+        // Inicia o jogo
+        desenhar();
+    </script>
+
+</body>
+</html>

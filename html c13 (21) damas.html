@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="vieport" content="width=device
+-width, initial-sacle=1.0">
+<title>Jogo de Damas</title>
+<style>
+body {
+display:flex;
+flex-direction: column;
+aling-items: center;
+font-family: Arial, sans-serif;
+background-color: f0f0f0;
+margin-top: 30px;
+}
+#status {
+margin-bottom: 15px;
+font-size: 20px;
+font-weight: bold;
+}
+#board {
+display: grid;
+grid-template-columns: repeat(8, 60px);
+grid-template-rows: repeat(8 ,60px);
+border: 4px solid #333;
+}
+.square {
+width: 60px;
+height: 60px;
+display: flex;
+align-items: center;
+justify-content: center;
+box-sizing: border-box;
+}
+.light {
+background-color: #f0d9b5;
+}
+.dark {
+background-color: #b58863;
+}
+.piece {
+width: 45px;
+height: 45px;
+border-radius: 50%;
+cursor: pointer;
+box-sizing: border-box;
+position:relative;
+}
+.piece.white {
+background-color: white;
+border: 2px solid #ccc;
+}
+piece.black {
+background-color: black;
+border: 2px solid #444;
+}
+/*Peça selecionada*/
+.sected {
+outline: 4px solid #00aaff;
+}
+/*Dama*/
+.king::after {
+content:"♚";
+position: absolute;
+color: gold;
+font-size: 28px;
+left: 7px;
+top: 5px;
+}
+/*Destino possível*/
+.possible {
+background-color: #7fc97f !important;
+}
+</style>
+</head>
+<body>
+<h1>Jogo de damas</h1>
+<div id="status">Vez das peças brancas</div>
+<div id+"board"></div>
+<script>const boardElement =
+document.getElementById("board");
+const statusElement =
+document.getElementById("status");
+/*
+0 = vazio
+1 = branca
+2 = preta
+para dar uma dama:
+3 = dama branca
+4 = dama preta
+*/
+let board = [
+[0,2,0,2,0,2,0,2],
+[2,0,2,0,2,0,2,0],
+[0,2,0,2,0,2,0,2],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+[1,0,1,0,1,0,1,0],
+]

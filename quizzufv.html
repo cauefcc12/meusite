@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz de Perguntas</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #60a5fa;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #cbd5e1;
+        }
+
+        .quiz {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+        }
+
+        .barra {
+            background: #334155;
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        #progresso {
+            width: 0%;
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s;
+        }
+
+        #pergunta {
+            font-size: 24px;
+            margin-bottom: 22px;
+        }
+
+        #respostas {
+            display: grid;
+            gap: 12px;
+        }
+
+        .opcao {
+            background: #0f172a;
+            color: white;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .opcao:hover:not(:disabled) {
+            border-color: #60a5fa;
+            background: #1e3a5f;
+        }
+
+        .opcao:disabled {
+            cursor: default;
+            opacity: 1;
+        }
+
+        .correta {
+            background: #166534 !important;
+            border-color: #22c55e !important;
+        }
+
+        .errada {
+            background: #991b1b !important;
+            border-color: #ef4444 !important;
+        }
+
+        #mensagem {
+            margin-top: 18px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .principal {
+            flex: 1;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .principal:hover {
+            background: #2563eb;
+        }
+
+        .principal:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #resultado {
+            display: none;
+            text-align: center;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        #resultado h2 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+        }
+
+        #pontuacaoFinal {
+            font-size: 32px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            .quiz {
+                padding: 18px;
+            }
+
+            #pergunta {
+                font-size: 21px;
+            }
+
+            .info {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header>
+            <h1>🧠 Quiz de Perguntas sobre autocuidado</h1>
+            <p>Teste seus conhecimentos!</p>
+        </header>
+
+        <section class="quiz" id="quiz">
+
+            <div class="info">
+                <span id="contador">Pergunta 1 de 5</span>
+                <span id="pontuacao">Pontos: 0</span>
+            </div>
+
+            <div class="barra">
+                <div id="progresso"></div>
+            </div>
+
+            <h2 id="pergunta">Carregando pergunta...</h2>
+
+            <div id="respostas"></div>
+
+            <p id="mensagem" aria-live="polite"></p>
+
+            <div class="botoes">
+                <button
+                    class="principal"
+                    id="proximo"
+                    onclick="proximaPergunta()"
+                    disabled>
+                    Próxima pergunta →
+                </button>
+            </div>
+
+        </section>
+
+        <section id="resultado" aria-live="polite">
+            <h2>🏆 Seu resultado</h2>
+            <p id="pontuacaoFinal"></p>
+            <p id="avaliacao"></p>
+
+            <div class="botoes">
+                <button class="principal" onclick="reiniciarQuiz()">
+                    Jogar novamente
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const perguntas = [
+            {
+                "id": 1,
+                pergunta: "Quando você se sente muito estressado ou sobrecarregado, qual costuma ser sua primeira reação?",
+            opcoes: [
+                " Ficar em silêncio e me isolar no quarto.",
+                " Desabafar com um amigo de confiança ou familiar.",
+                " Passar horas jogando ou nas redes sociais para esquecer.",
+                " Praticar um hobby, ouvir música ou fazer um esporte."
+            ],
+                correta: 1
+            },
+            {
+                "id": 2,
+                pergunta: "Quantas horas de sono você consegue dormir na maioria das noites?",
+            opcoes: [
+                " Menos de 6 horas.",
+                " Entre 6 e 7 horas.",
+                " Entre 8 e 10 horas (o recomendado para sua idade!).",
+                " Durmo muito no fim de semana, mas quase nada nos dias de aula."
+            ],
+                correta: 2
+            },
+            {
+                "id": 3,
+                pergunta: "Como é sua relação com as telas (celular/computador) antes de dormir?",
+            opcoes: [
+                " Uso até o momento exato em que pego no sono.",
+                " Tento desligar uns 30 minutos antes, mas nem sempre consigo.",
+                " Desligo as telas pelo menos 1 hora antes para relaxar a mente.",
+                " Acordo no meio da noite e fico checando as notificações."
+            ],
+                correta: 1
+            },
+            {
+                "id": 4,
+                pergunta: "Quando você comete um erro na escola ou em um jogo, o que você pensa?",
+            opcoes: [
+                " Eu sou um fracasso, nunca faço nada certo.",
+                " Todo mundo vai rir de mim ou me julgar.",
+                " Erros acontecem, o que posso aprender com isso para a próxima?'.",
+                " Ignoro o erro e finjo que nada aconteceu."
+            ],
+                correta: 2
+            },
+            {
+                "id": 5,
+                pergunta: "Como você reage quando percebe que seus amigos estão excluindo você ou agindo de forma estranha?",
+            opcoes: [
+                " Tento mudar meu jeito de ser só para agradar e ser aceito.",
+                " Converso abertamente com eles para entender o que está acontecendo.",
+                " Fico triste e guardo tudo para mim, achando que o problema sou eu.",
+                " Procuro focar em outras amizades que me fazem bem."
+            ],
+                correta: 3
+            },
+            {
+        "id": 6,
+        pergunta: "Com que frequência você tira um tempo na semana apenas para relaxar (sem obrigações ou telas)?",
+            opcoes: [
+                " Nunca, sinto que estou sempre ocupado ou conectado.",
+                " Raramente, só quando estou muito cansado.",
+                " Às vezes, quando lembro de dar um tempo.",
+                " Regularmente, organizo meu tempo para ter esse momento meu."
+            ],
+                correta: 3
+            },
+            {
+            "id": 7,
+            pergunta: "Se um amigo estivesse passando por uma fase difícil e triste, o que você diria a ele?",
+            opcoes: [
+                " Isso é drama, logo passa'.",
+                " Estou aqui para o que precisar, eu sou sua companhia.",
+                " Tenta não pensar nisso, vamos jogar algo para distrai'.",
+                " Não saberia o que dizer e me afastaria por medo de piorar as coisas."
+            ],
+            correta: 1
+        },
+        {
+            "id": 8,
+            pergunta: "Você consegue identificar e dar nome às emoções que sente no dia a dia (ex: frustração, ansiedade, entusiasmo)?",
+            opcoes: [
+                " Não, só sinto um aperto ou irritação e não sei explicar.",
+                " Às vezes, mas a maioria das emoções me deixa confuso.",
+                " Sim, consigo perceber o que engatilhou aquele sentimento.",
+                " Prefiro ignorar o que sinto e seguir em frente."
+            ],
+            correta: 2
+        },
+        {
+            "id": 10,
+            pergunta: "Pedir ajuda profissional (como ir a um psicólogo) ou conversar com o conselheiro da escola significa o que para você?",
+            opcoes: [
+                " Um sinal de fraqueza ou que a pessoa enlouqueceu.",
+                " Um passo corajoso de autocuidado para entender melhor a si mesmo.",
+                " Algo desnecessário que dá para resolver sozinho.",
+                " Uma boa alternativa, mas teria vergonha de contar para os outros."
+            ],
+            correta: 1
+        },
+        ];
+
+        let indiceAtual = 0;
+        let pontos = 0;
+        let respondeu = false;
+
+        const elementoPergunta =
+            document.getElementById("pergunta");
+
+        const elementoRespostas =
+            document.getElementById("respostas");
+
+        const elementoMensagem =
+            document.getElementById("mensagem");
+
+        const botaoProximo =
+            document.getElementById("proximo");
+
+        function mostrarPergunta() {
+            respondeu = false;
+
+            const atual = perguntas[indiceAtual];
+
+            elementoPergunta.textContent = atual.pergunta;
+
+            document.getElementById("contador").textContent =
+                `Pergunta ${indiceAtual + 1} de ${perguntas.length}`;
+
+            document.getElementById("pontuacao").textContent =
+                `Pontos: ${pontos}`;
+
+            document.getElementById("progresso").style.width =
+                `${(indiceAtual / perguntas.length) * 100}%`;
+
+            elementoRespostas.innerHTML = "";
+            elementoMensagem.textContent = "";
+
+            botaoProximo.disabled = true;
+
+            atual.opcoes.forEach((opcao, indice) => {
+                const botao = document.createElement("button");
+
+                botao.className = "opcao";
+                botao.textContent =
+                    `${String.fromCharCode(65 + indice)}) ${opcao}`;
+
+                botao.onclick = () => verificarResposta(indice);
+
+                elementoRespostas.appendChild(botao);
+            });
+        }
+
+        function verificarResposta(indiceEscolhido) {
+            if (respondeu) return;
+
+            respondeu = true;
+
+            const atual = perguntas[indiceAtual];
+            const botoes = elementoRespostas.querySelectorAll(".opcao");
+
+            botoes.forEach((botao, indice) => {
+                botao.disabled = true;
+
+                if (indice === atual.correta) {
+                    botao.classList.add("correta");
+                }
+            });
+
+            if (indiceEscolhido === atual.correta) {
+                pontos++;
+                elementoMensagem.textContent = "✅ Resposta correta!";
+                elementoMensagem.style.color = "#4ade80";
+            } else {
+                botoes[indiceEscolhido].classList.add("errada");
+                elementoMensagem.textContent =
+                    "❌ Resposta incorreta. Tente a próxima!";
+                elementoMensagem.style.color = "#f87171";
+            }
+
+            document.getElementById("pontuacao").textContent =
+                `Pontos: ${pontos}`;
+
+            botaoProximo.disabled = false;
+
+            if (indiceAtual === perguntas.length - 1) {
+                botaoProximo.textContent = "Ver resultado 🏆";
+            }
+        }
+
+        function proximaPergunta() {
+            if (!respondeu) return;
+
+            indiceAtual++;
+
+            if (indiceAtual < perguntas.length) {
+                mostrarPergunta();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById("quiz").style.display = "none";
+
+            const resultado = document.getElementById("resultado");
+            resultado.style.display = "block";
+
+            document.getElementById("progresso").style.width = "100%";
+
+            document.getElementById("pontuacaoFinal").textContent =
+                `${pontos} de ${perguntas.length} pontos`;
+
+            let avaliacao;
+
+            if (pontos === 9) {
+                avaliacao = "🌟 Perfeito! Você acertou todas!";
+            } else if (pontos >= 5) {
+                avaliacao = "👏 Muito bem! Você foi muito bem no quiz!";
+            } else if(pontos < 5){
+                avaliacao = "💪 Continue praticando e tente novamente!";
+            }
+
+            document.getElementById("avaliacao").textContent = avaliacao;
+        }
+
+        function reiniciarQuiz() {
+            indiceAtual = 0;
+            pontos = 0;
+            respondeu = false;
+
+            document.getElementById("quiz").style.display = "block";
+            document.getElementById("resultado").style.display = "none";
+
+            botaoProximo.textContent = "Próxima pergunta →";
+
+            mostrarPergunta();
+        }
+
+        mostrarPergunta();
+    </script>
+
+</body>
+</html>

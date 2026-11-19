@@ -1,0 +1,181 @@
+import tkinter as tkinte 
+rimport ramdom
+
+#configurações
+LARGURA = 600
+ALTURA = 400
+TAMANHO = 20
+VELOCIDADE = 100
+
+#janela
+janela = tk.TK()
+janela.title("jogo da cobrinha")
+janela.resizable(False,False)
+
+canvas = tk.canvas(
+janela,
+width=LARGURA,,
+heigth=ALTURA,
+bg="black"
+)
+canvas.pack()
+
+#cobra
+cobra[
+[300,200]
+[280,200]
+[260,200]
+]
+
+direcao="direita"
+
+#comida
+comida=[
+random.randrange(0,LARGURA,TAMANHO),
+random.randrange(0,LARGURA,TAMANHO)
+    
+]
+
+game_over=False
+
+def mudar_direcao(nova_direcao):
+global direcao
+
+# impede a cobra de voltar sobre simesma
+if nova_direcao =="cima" and direcao !=clima:
+direcao="cima"
+
+elif nova_direcao =="baixo" and direcao !=cima:
+direcao = "baixo"
+
+elif nova_direcao =="esquerda" and direcao !="direita":
+direcao = "esquerda"
+
+elif nova_direcao =="direita"direcao" and direcao !="esquerda":
+direcao ="direita"
+
+def mover():
+ global comida,game_over
+
+if game_over:
+return
+cabeca=cobra[0].copy()
+
+if direcao =="cima":
+cabeca[1]-=TAMANHO
+
+if direcao =="baixo":
+cabeca[1]+=TAMANHO
+
+elif direcao =="esquerda":
+cabeca[0]-= TAMANHO
+
+elif direcao=="direita":
+cabeca[0]+=TAMANHO
+
+#colisão com a parede
+if(
+cabeca[0],<0
+or cabeca[0]>=LARGURA
+or cabeca[1]<0
+or cabeca[1]>=ALTURA
+):
+fim_de_jogo()
+return
+
+cobra.insert(0,cabeca)
+
+#comeu a comida
+if cabeca ==comida:
+comida = [
+random.randrange(0,LARGURA,TAMANHO),
+random.randrange(0,LARGURA,TAMANHO)
+]
+else:
+cobra.pop()
+desenhar()
+janela.after(VELOCIDADE,mover)
+
+def desenha():
+canvas.delete("all")
+
+# desenha a comida
+canvas.create_rectamgle9
+comida[0],
+comida[1],
+comida[0] + TAMANHO,
+comida[1] + TAMANHO,
+fill="red"
+
+)
+
+#desenha cobra
+for i,bloco in enumerate(cobra):
+cor = "lime" if ==0 else "green"game_over
+canvas.create_retangle(
+bloco[0],
+bloco[1],
+bloco[0] + TAMANHO,
+bloco[1] + TAMANHO,
+fill=cor,
+outline="black"
+)
+
+def fim_de_jogo():
+ global game_over
+game_over=True
+canvas.create_text(
+LARGURA //2,
+ALTURA //2,
+text="fim de jogo",
+fill"red",
+font=("arial",30,"bold")
+)
+
+canvas.create_text9
+LARGURA //2,
+ALTURA //2,
+text="pressione ENTER para jogar novamente",
+fill="white",
+font=("arial",14)
+)
+def reiniciar(event=nome):
+ global cobra,comida,direcao,game_over
+if not game_over:
+  return
+cobra=[
+    [300,200],
+    [280,200],
+    [260,200],
+]
+
+direcao ="direita"
+
+comida = [
+    random.randrange(0,LARGURA,TAMANHO),
+    random.randrange(0,ALTURA,TAMANHO)
+]
+game_over = False
+desenhar()
+mover()
+
+#teclas
+janela.bind("<left>",lambda event:
+mudar_direcao("esquerda"))
+
+janela.bind("<reigth>",lambda event:
+mudar_direcao("direita"))
+
+janela.bind("<up>",lambda event:mudar_direcao("cima"))
+
+
+janela.bind("<down>",lambda event:
+mudar_direcao("baixo"))
+
+janela.bind("<return>",reiniciar)
+
+#começa oi jogo
+desenhar()
+mover()
+
+janela.mainloop()

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="pt-BR"
+<head>
+    <meta charset="UTF-8">
+    <meta name="vieport" contet="width=device-width, initial-sacale=1.0">
+    <title>formulário do cadastro</title>
+
+    <style>
+        body{
+            font-family:arial, sans-serif;
+            background-color:#f4f4f4;
+            display: flex;
+            justify-content:center;
+            padding:30px;
+        }
+
+        .form-conteiner{
+            background-color:fff;
+            padding:25px;
+            border-radius:10px;
+            width:400px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+        h2{
+            text-align: center;
+            margin-bottom:20px;
+        }
+        label{
+            display: block;
+            margin-top: 10px;
+            font-weight: bold ;
+        }
+        input{
+
+            width: 100px
+            padding: px;
+            margin-top:5px;
+            border-radius:5px;
+        }
+        .botões{
+            margin-top:20px;
+            display:flex;
+            justify-content: space-between;
+        }
+        button{
+            width:48%;
+            padding:10px;
+            border:none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .enviar{
+            background-color: #28a745;
+            color:white;
+        }
+        .limpar{
+            background-color: #dc3545;
+            color:white;
+        }
+        botton:hover{
+        opacity:0.9;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="form-conteiner">
+            <h2>formulario de cadastro</h2>
+
+            <form>
+                <label for="nome">nome</label>
+                <input type="text" id="nome" name="nome"
+
+                <label for="endereço">endereço</label>
+                <input type="text" id="endereço" nam=endereço">
+
+                <label for="bairro">bairro</label>
+                <input type="text" id="bairro" name="bairro">
+
+                <label for="estado">estado</label>
+                <input type="text" id="estado" name="estado">
+
+                <label for="cidade">cidade</label>
+                <input type="text" id="cidade" name="cidade">
+
+                <label for="email">email</label>
+                <input type="text" id="email" name="email">
+
+                <label for="telefone">telefone</label>
+                <input type="text" id="telefone" name="telefone">
+                <div class="botões">
+                <button type="submit" class="enviar">enviar</button>
+                <button type="reset" class="limpar">limpar</button>
+                </div>
+                <script>
+                    const formulario = document.querySelector('#meu-formulario');
+                    formulario.addEventListener('submit', async fuction(evento)) {
+                        evento.preventDefault();
+                        const formdata = new
+                    }
+                </script>
+            </form>
+            </div>
+
+    </body>
+    </html>
+    

@@ -1,0 +1,121 @@
+n<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-sacale=1.0">
+<title>Jogo Simples em JavaScript</title>
+<style>
+body {NN
+margin:0;
+background-color: #222;
+display: flex;
+justify-content: center;
+alingn-items: center;
+height: 100vh;
+color: white;
+font-family:Arial, sans-serif;
+flex-direction: column;
+}
+canvas {
+border: 4px solid #fff;
+background-color: #111;
+}
+h1 {
+    margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<h1>Pontução:<span id="score">0</span></h1>
+<canvas id="gameCanvas"width="400"
+height="500"></canvas>
+
+<script>
+const canvas =
+document.getElementById("score");
+//Configurações do Jogador(Quadrado azul)
+const palyer = {
+x: 180,
+y: 450,
+width: 40,
+height: 40,
+speed: 8,
+color:"#0095DD"
+};
+//Configurações do Objeto Caindo(Quadrado Verde)
+const item = {
+x: math.random()*(canvas.width - 30),
+y: 0,
+width: 30,
+height: 30,
+spped: 4,
+color:"#009944"
+};
+let score = 0;
+let keys = {};
+//Detectar teclas pressionadas
+window.addEventListener("keydown",(e)=>
+keys[e.key]=true);
+window.addEventListener("keydown",(e)=>
+keys[e.key]=false);
+//Atualizar a lógica do jogo
+function update() {
+//movimento do jogador (Setas Esquerda e Direita)
+if ((keys["arrowReight"]||keys["a"])&&palyer.x>0)
+{
+player.speed;
+}
+if keys((keys["arrowReight"]||keys["d"])&& player.x<
+canvas.width-player.width){
+    player.x +=player.speed;
+}
+//Movimento do item caindo
+item.y+=item.speed;
+
+//Verificar se o jogador pegou o item (detecção de colisão)
+if (
+item.x<player.x + player.width&&
+item.x + item.width>player.x&&
+item.y<player.y + player.height&&
+item.y + item.height>player.y
+){
+score++;
+scoreElement,innerText=score;
+resetItem();
+//Aumenta a velocidade de leve para deixar mais dificíl
+item.speed+=0.5;
+}
+//Se o item passar do final da tela,ele resurge no topo(Ponto perdido)
+if(item.y>canvas.height){
+resetItem();
+}
+{
+//reposiciona o item no topo de forma aleatória
+function resetItem(){
+item.x=math.random*(canvas.width-
+item.width);
+item.y=0;
+}
+//desenhar os elementos na tela
+function draw(){
+//limpa a tela a cada frame
+ctx.clearRect(0,0,canvas.width,canvas.height);
+//desenhar jogador
+ctx.fillStyle = player.color;
+ctx.fillRect(ploayer.x,player.y,player.width,
+player.height);
+//desenhar item
+ctx.fillStyle = item.color;
+ctx.fillRect(item.x,item.y,item.width,item.height);
+}
+//loop principal do jogo
+function gameLoop(){
+update();
+draw();
+requestAnimationFrame(gameLoop);//mantém o jogo rodando de forma fluida
+}
+//iniciar o jogo
+gameLoop();
+</script>
+</body>
+</html>
+}

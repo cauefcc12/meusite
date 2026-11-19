@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt- BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="vieport"content="width=device-width,initial-sacle=1.0">
+
+        <title> meu jogo de pintar </title>
+
+        <style></style>
+        body{
+            margin:0;
+            font-family:arial,sans-serif;
+            <backgroud: #f0f0f0;
+
+            display:flex;
+            flex-direction:column;
+            align-item:center;
+            justify-content:center;
+
+            min-heigth: 100vh;
+        }
+
+        h1{
+            color: #333;
+        }
+
+        canvas{
+            width: 600px;
+            heigth: 400px;
+
+            backgroud:white;
+            border: 2px solid #333;
+
+            cursor: crosshair;
+        }
+
+        button{
+            margin-top:15px;
+            padding:10px 20px;
+
+            border:none;
+            border-radius:5px;
+
+            backgroud:#e63946;
+            color:white;
+
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            backgroud:#c1121f;
+        }
+    </style>
+    </head>
+
+    <body>
+
+        <h1>meu jogo de pintar</h1>
+
+        <canvas id="canvas" width="600"
+        heigth="400"></canvas>
+
+        <button id="limpar">Limpar Tela</button>
+
+        <script>
+            //pega o canvas
+            const canvas =
+            document.getElementById("canvas");
+
+            //pega o contexto 2D para desenhar
+            const ctx = canvas.getContext("2d");
+
+            //configuraçãoes do pincel
+            const raio = 5;
+            const cor ="red";
+
+            //Controla se o mouse está pressionado
+            let desenha = false;
+
+            //quando o butão esquerdo do mouse é pressionado
+            canvas.addEventListener("mousedown",function(event){
+                desenhando = true;
+
+                desenhar(event);
+            });
+
+            //quando o mouse se move
+            canvas.addEventListener("mousemove",fuction(event){
+                if (desenhando) {
+                    desenhar(event);
+                }
+            });
+
+            //quando o butão do mouse é solto
+            canvas.addEventListener("mouseup",function(){
+                desenhando = false;
+            });
+
+            //caso o mouse saia do canvas
+            canvas.addEventListener("mouseup",function(){
+                desenhando = false;
+            });
+
+            //Função responsável por desenhar
+            function desenhar(event) {
+
+                //pega a posição do mouse em relação ao canvas
+
+                cont.getBoundingClientRect();
+
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                //desenha um círculo vermelho
+                ctx.beginPath();
+
+                ctx.arc(
+                    x,
+                    y,
+                    raio,
+                    0,
+                    math.PI*2
+                );
+
+                ctx.fillStyle=cor
+                ctx.fill();
+
+                ctx.closePath();
+            }
+
+            //função para limpar a tela
+            function limparTela(){
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.heigth,
+                );
+            }
+
+            //botão de limpar
+            document.getElementById("limpar")
+            .addEventListener("click",limparTela);
+        </script>
+    </body>
+</html>

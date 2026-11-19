@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>joguinho simples de adivinha de números</title>
+<style>
+body {font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: white;}
+input{padding: 8px ;width: 100px; text-align: center;}
+button {padding: 8px 15px; font-size: 16px; cursor:pointer;}
+.mensagem{margin-top: 20px;font-size: 18px;font-weight: bold;}
+</style>
+</head>>
+<body>
+<h1>adivinhe o número</h1>    
+<p> adivinhe um número de 1 a 10!</p>
+<input type="number" id="palpite" min ="1" max="10">
+<button onclick="tentar()">chutar</button>
+<div class="mensagem" id="resultado"></div>
+<script>
+// sorteia um número de 1 a 10
+let numeroScreto = Math.floor(Math.random() * 10) + 1;
+let tentativas = 2;
+function tentar() {
+ const chute = Number(document.getElementById('palpite').value);
+ const resultado = document.getElementById('resultado');
+if (!chute || chute < 1 || chute > 10) {
+ resultado.style.color = 'orange';
+resultado.innerText = 'digite um número entre 1 a 10!';
+return;
+    }
+}
+tentativas--;
+if (chute === numeroScreto) {
+resultado.style.color = 'green';
+resultado.innerText = 'parabéns! você acertou!';
+setTimeout(reiniciar, 3000);
+} else if (tentativas === 0) {
+resultado.style.color = 'red';
+resultado.innerText = 'fim de jogo! o número era'${o número secreto}.`;
+setTimeout(reiniciar,4000);
+}else if(chute<numeroScreto){
+resultado.style.color='blue';
+resultado.innerText=`Errou! o número secreto é maior.tentativas restantes:
+${tentativas}`;
+}else{
+resultado.style.color='blue';
+resultado.innerText=`Errou! o número secreto é menor.tentativas restantes:
+${tentativas}`;
+function reiniciar(){
+numeroSecreto = Math.floor(Math.random()* 10)+1;
+tentativas = 3;
+document.getElementByid('palpite').value=";
+document.getElementByid('resultado').innerText=";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Labirinto</title>
+<style>
+#jogo {
+display: grid;
+grid-template-columns: repeat(10,40px);
+}
+
+div {
+width: 40px;
+height: 40px;
+box-sizing: border-box;
+border: 1px solid gray;
+}
+
+.parede { background: black;}
+.chegada { background: green;}
+.jogador { background: blue;}
+</style>
+</head>
+
+<body>
+
+<h2>Labirinto</h2>
+<div id="jogo"></div>
+<script>
+const mapa = [
+[1,1,0,1,1,1,1,1,1,1],
+[1,0,0,0,1,0,0,0,0,1],
+[1,1,1,0,1,0,1,1,0,1],
+[1,0,0,0,0,0,0,1,0,1],
+[1,0,1,1,1,1,0,1,0,1],
+[1,0,1,0,0,0,0,1,0,1],
+[1,0,1,1,1,1,1,1,0,1],
+[1,0,0,0,0,0,0,0,2,1],
+[1,1,1,1,1,1,1,1,1,1],
+];
+
+let x = 1, y = 1;
+
+function desenhar() {
+jogo.innerHTML ="";
+
+mapa.forEach((linha, Y)=> {
+linha.forEach((tipo, X)=> {
+let celula =
+document.createElement("div");
+
+
+
+if ( tipo == 1)celula.className =
+"parede";
+
+if ( tipo == 2)celula.className =
+"chegada";
+
+if (X == x && Y == y)celula.className =
+"jogador";
+jogo.appendChild(celula);
+});
+});
+}
+
+document.onkeydown = e => {
+let nx = x, ny = y;
+
+if (e.key =="arrowUp") ny--;
+if (e.key =="arrowDown") ny++;
+if (e.key =="arrowLeft") ny--;
+if (e.key =="arrowHeight") ny++;
+
+if (mapa[ny] && mapa[ny][nx] !=1) {
+x = nx;
+y = ny;
+desenhar();
+
+if ( mapa[y][x] == 2)
+alert("Você venceu!");
+}
+};
+desenhar();
+</script>
+</body>
+</html>
