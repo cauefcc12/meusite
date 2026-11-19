@@ -1,151 +1,176 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labirinto da Abelha</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Labirinto da Abelha</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 15px;
+      touch-action: manipulation; /* Evita zoom acidental ao tocar rápido nos botões */
+    }
+    h2 { color: #333; margin-bottom: 5px; }
+    p { color: #444; font-size: 14px; }
+    
+    #jogo {
+      display: grid;
+      grid-template-columns: repeat(10, 32px); /* Tamanho ajustado para telas de celular */
+      width: max-content;
+      margin: 15px auto;
+      border: 2px solid #333;
+    }
+    #jogo div {
+      width: 32px;
+      height: 32px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    #jogo .parede { background-color: black; border-color: black; }
+    #jogo .chegada { background-color: #2ecc71; }
+    
+    /* Tenta carregar a imagem; se falhar no Android, o emoji no JS assume */
+    #jogo .jogador {
+      background-color: white;
+      background-image: url("abelhudo.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: #f0f0f0;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        #jogo {
-            display: grid;
-            grid-template-columns: repeat(10, 40px);
-            width: max-content;
-            margin: 20px auto;
-        }
-
-        #jogo div {
-            width: 40px;
-            height: 40px;
-            box-sizing: border-box;
-            border: 1px solid gray;
-            background-color: white;
-        }
-
-        #jogo .parede {
-            background-color: black;
-        }
-
-        #jogo .chegada {
-            background-color: green;
-        }
-
-        #jogo .jogador {
-            background-color: white;
-            background-image: url("abelhudo.png");
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        p {
-            color: #444;
-        }
-    </style>
+    /* Controles virtuais para Android */
+    .controles {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      grid-template-rows: repeat(2, 60px);
+      gap: 8px;
+      width: max-content;
+      margin: 20px auto;
+    }
+    .btn {
+      background-color: #f1c40f;
+      border: 2px solid #d4ac0d;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn:active {
+      background-color: #d4ac0d;
+      transform: scale(0.95);
+    }
+    .cima { grid-column: 2; grid-row: 1; }
+    .esquerda { grid-column: 1; grid-row: 2; }
+    .baixo { grid-column: 2; grid-row: 2; }
+    .direita { grid-column: 3; grid-row: 2; }
+  </style>
 </head>
-
 <body>
 
-    <h2>🐝 Labirinto da Abelha</h2>
-    <p>Use as setas do teclado para chegar ao quadrado verde!</p>
+  <h2>🐝 Labirinto da Abelha</h2>
+  <p>Use os botões abaixo ou as setas para chegar ao verde!</p>
+  
+  <div id="jogo"></div>
 
-    <div id="jogo"></div>
+  <!-- Controles na tela para celular -->
+  <div class="controles">
+    <button class="btn cima" onclick="mover(0, -1)">⬆️</button>
+    <button class="btn esquerda" onclick="mover(-1, 0)">⬅️</button>
+    <button class="btn baixo" onclick="mover(0, 1)">⬇️</button>
+    <button class="btn direita" onclick="mover(1, 0)">➡️</button>
+  </div>
 
-    <script>
-        const jogo = document.getElementById("jogo");
+  <script>
+    const jogo = document.getElementById("jogo");
 
-        // 0 = caminho, 1 = parede, 2 = chegada
-        const mapa = [
-            [1,1,0,1,1,1,1,1,1,1],
-            [1,0,0,0,1,0,0,0,0,1],
-            [1,1,1,0,1,0,1,1,0,1],
-            [1,0,0,0,0,0,0,1,0,1],
-            [1,0,1,1,1,1,0,1,0,1],
-            [1,0,1,0,0,0,0,1,0,1],
-            [1,0,1,1,1,1,1,1,0,1],
-            [1,0,0,0,0,0,0,0,2,1],
-            [1,1,1,1,1,1,1,1,1,1]
-        ];
+    // 0 = caminho, 1 = parede, 2 = chegada
+    const mapa = [
+      [1,1,0,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,0,0,1],
+      [1,1,1,0,1,0,1,1,0,1],
+      [1,0,0,0,0,0,0,1,0,1],
+      [1,0,1,1,1,1,0,1,0,1],
+      [1,0,1,0,0,0,0,1,0,1],
+      [1,0,1,1,1,1,1,1,0,1],
+      [1,0,0,0,0,0,0,0,2,1],
+      [1,1,1,1,1,1,1,1,1,1]
+    ];
 
-        // Posição inicial da abelha
-        let x = 1;
-        let y = 1;
+    let x = 1;
+    let y = 1;
+    let venceu = false;
+    let imagemCarregou = true;
 
-        // Verifica se o jogador venceu
-        let venceu = false;
+    // Testa se a imagem abelhudo.png existe na mesma pasta
+    const imgTeste = new Image();
+    imgTeste.onerror = () => { imagemCarregou = false; desenhar(); };
+    imgTeste.src = "abelhudo.png";
 
-        function desenhar() {
-            jogo.innerHTML = "";
+    function desenhar() {
+      jogo.innerHTML = "";
+      mapa.forEach((linha, Y) => {
+        linha.forEach((tipo, X) => {
+          const celula = document.createElement("div");
 
-            mapa.forEach((linha, Y) => {
-                linha.forEach((tipo, X) => {
-                    const celula = document.createElement("div");
+          if (tipo === 1) {
+            celula.classList.add("parede");
+          } else if (tipo === 2) {
+            celula.classList.add("chegada");
+          }
 
-                    // Desenha as paredes e a chegada
-                    if (tipo === 1) {
-                        celula.classList.add("parede");
-                    } else if (tipo === 2) {
-                        celula.classList.add("chegada");
-                    }
-
-                    // Coloca a imagem da abelha
-                    if (X === x && Y === y) {
-                        celula.className = "jogador";
-                    }
-
-                    jogo.appendChild(celula);
-                });
-            });
-        }
-
-        // Movimentação pelo teclado
-        document.onkeydown = function(e) {
-            if (venceu) return;
-
-            let nx = x;
-            let ny = y;
-
-            if (e.key === "ArrowUp") ny--;
-            else if (e.key === "ArrowDown") ny++;
-            else if (e.key === "ArrowLeft") nx--;
-            else if (e.key === "ArrowRight") nx++;
-            else return;
-
-            // Impede atravessar paredes ou sair do mapa
-            if (
-                mapa[ny] &&
-                mapa[ny][nx] !== undefined &&
-                mapa[ny][nx] !== 1
-            ) {
-                x = nx;
-                y = ny;
-
-                desenhar();
-
-                // Verifica a chegada
-                if (mapa[y][x] === 2) {
-                    venceu = true;
-
-                    setTimeout(() => {
-                        alert("🐝 Parabéns! A abelha venceu o labirinto!");
-                    }, 100);
-                }
+          if (X === x && Y === y) {
+            celula.className = "jogador";
+            // Se a imagem não existir no celular, mostra o emoji da abelha
+            if (!imagemCarregou) {
+              celula.textContent = "🐝";
             }
-        };
+          }
+          jogo.appendChild(celula);
+        });
+      });
+    }
 
-        // Inicia o jogo
+    // Função única de movimento (usada pelos botões e pelo teclado)
+    function mover(dx, dy) {
+      if (venceu) return;
+
+      let nx = x + dx;
+      let ny = y + dy;
+
+      if (mapa[ny] && mapa[ny][nx] !== undefined && mapa[ny][nx] !== 1) {
+        x = nx;
+        y = ny;
         desenhar();
-    </script>
+
+        if (mapa[y][x] === 2) {
+          venceu = true;
+          setTimeout(() => {
+            alert("🐝 Parabéns! A abelha venceu o labirinto!");
+          }, 100);
+        }
+      }
+    }
+
+    // Mantém o suporte para teclado no computador
+    document.onkeydown = function(e) {
+      if (e.key === "ArrowUp") mover(0, -1);
+      else if (e.key === "ArrowDown") mover(0, 1);
+      else if (e.key === "ArrowLeft") mover(-1, 0);
+      else if (e.key === "ArrowRight") mover(1, 0);
+    };
+
+    desenhar();
+  </script>
 
 </body>
 </html>
